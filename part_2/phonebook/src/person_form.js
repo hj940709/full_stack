@@ -1,17 +1,58 @@
 import React, { useState } from 'react'
+import PersonService from './person_service'
 
 const PersonForm = (props) => {
-    const { persons, setPersons } = props
+    const { persons, setPersons, setMessage, setIsError } = props
     const [ newName, setNewName ] = useState('')
     const [ newNumber, setNewNumber ] = useState('')
 
     const submitPerson = (event) => {
         event.preventDefault()
         console.log('submit: '+ newName)
-        if(persons.filter(person => person.name === newName).length)
-          alert(`${newName} is already added to phonebook`)
-        else
-          setPersons(persons.concat({name: newName, number:newNumber}))
+        const filtered = persons.filter(person => person.name === newName)
+        if(filtered.length){
+          const person = filtered[0]
+          if (window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one?`)) {
+            PersonService.update(person.id, {name: newName, number: newNumber})
+            .then(data => {
+              person.number = newNumber
+              setPersons(persons.filter(person => person.name !== newName).concat(person))
+              setMessage('Updated ' + newName)
+              setTimeout(() => {
+                setMessage(null)
+                setIsError(false)
+              }, 5000)
+            })
+            .catch(error => {
+              setMessage(error)
+              setIsError(true)
+              setTimeout(() => {
+                setMessage(null)
+                setIsError(false)
+              }, 5000)
+            })
+          }
+        }
+        else{
+          PersonService.create({name: newName, number:newNumber})
+          .then(data=>{
+            setPersons(persons.concat(data))
+            setMessage('Added ' + newName)
+            setIsError(false)
+            setTimeout(() => {
+              setMessage(null)
+              setIsError(false)
+            }, 5000)
+          })
+          .catch(error => {
+            setMessage(error)
+            setIsError(true)
+            setTimeout(() => {
+              setMessage(null)
+              setIsError(false)
+            }, 5000)
+          })
+        }
         setNewName('')
         setNewNumber('')
       }
