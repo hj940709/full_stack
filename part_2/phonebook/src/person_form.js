@@ -24,7 +24,7 @@ const PersonForm = (props) => {
               }, 5000)
             })
             .catch(error => {
-              setMessage(error)
+              setMessage(error.response.data.error)
               setIsError(true)
               setTimeout(() => {
                 setMessage(null)
@@ -45,7 +45,7 @@ const PersonForm = (props) => {
             }, 5000)
           })
           .catch(error => {
-            setMessage(error)
+            setMessage(error.response.data.error)
             setIsError(true)
             setTimeout(() => {
               setMessage(null)
