@@ -12,12 +12,12 @@ blogsRouter.get('/:id', async (request, response, next) => {
 })
   
 blogsRouter.post('/', async (request, response, next) => {
-    let blog = new Blog(request.body)
-    const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
-    if(!request.token || !decodedToken.id)
-        return response.status(401).json({error: 'Not logged in'})
-    blog.user = decodedToken.id
     try{
+        let blog = new Blog(request.body)
+        const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
+        if(!request.token || !decodedToken.id)
+            return response.status(401).json({error: 'Not logged in'})
+        blog.user = decodedToken.id
         return response.json(await blog.save())
     }catch(exception){
         next(exception)
