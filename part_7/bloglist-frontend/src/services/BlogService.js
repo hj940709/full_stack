@@ -1,7 +1,8 @@
 import axios from 'axios'
 const baseUrl = '/api/blog'
 
-const token = 'bearer ' + window.localStorage.getItem('token')
+const user = JSON.parse(window.localStorage.getItem('user')) || {token: null}
+const token = 'bearer ' + user.token
 const config = { headers: { Authorization: token } }
 
 const getAll = async () => {
@@ -14,8 +15,8 @@ const postBlog = async data => {
     return response.data
 }
 
-const likeBlog = async (id, likes) => {
-    const response =  await axios.put(baseUrl+'/'+id, { likes }, config)
+const likeBlog = async data => {
+    const response =  await axios.put(baseUrl+'/'+data.id, {likes: data.likes + 1 }, config)
     return response.data
 }
 
