@@ -2,18 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import LoginForm from './components/LoginForm'
 import LoginView from './components/LoginView'
-import Notification from './components/Notifiaction'
 import TogglableView from './components/ToggleableView'
 import { login, logout } from './reducers/loginReducer'
 
+
 const App = props => {
-    const {user, token} = props
+    const {user, token } = props
+    
     if(user===null ||token === null){
         const LoginFormRef = React.createRef()
         return (
-            <div className="App">
-                <Notification />
-                <TogglableView buttonLabel='login' ref={LoginFormRef}>
+            <div className="container">
+                <TogglableView buttonLabel='Login' ref={LoginFormRef}>
                     <LoginForm />
                 </TogglableView>
             </div>
@@ -21,8 +21,7 @@ const App = props => {
     }
     else{
         return (
-            <div className="App" >
-                <Notification />
+            <div className="container" >
                 <LoginView />
             </div>
         )

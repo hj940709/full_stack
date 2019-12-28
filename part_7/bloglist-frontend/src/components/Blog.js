@@ -5,9 +5,7 @@ import { setNotification } from '../reducers/notificationReducer'
 import { likeBlog, removeBlog, commentBlog } from '../reducers/blogReducer'
 import { useField } from '../hooks'
 
-const Blog = ({ blogId, blogs, setNotification, likeBlog, removeBlog, commentBlog }) => {
-    let blog = blogs.find(blog=>blog.id===blogId)
-
+const Blog = ({ blog, setNotification, likeBlog, removeBlog, commentBlog }) => {
     const comment = useField('text')
 
     const likeHandler = async () => {
@@ -40,22 +38,24 @@ const Blog = ({ blogId, blogs, setNotification, likeBlog, removeBlog, commentBlo
 
     return (
         <div >
-            <div >
-                {blog.title} {blog.author}
+            <div className='col-sm-6'>
+                <div >
+                    {blog.title} {blog.author}
+                </div>
+                <div>
+                    <a href={blog.url} >{blog.url}</a>
+                    <p>{blog.likes} likes <button onClick={() => likeHandler()} className='btn btn-warning' data-cy='like'>like</button></p>
+                    added by {blog.user.name} <br />
+                    <button onClick={() => removeHandler()} className='btn btn-danger'>remove</button>
+                </div>
+                <h5>Comments</h5>
+                <form onSubmit={commentHandler} className='input-group col-sm-6'>
+                    <input value={comment.value} onChange={comment.onChange} type={comment.type} className={comment.className} data-cy='comment-text'/>
+                    <span className="input-group-btn"><button type='submit' className='btn btn-default' data-cy='comment-btn'>comment</button></span>
+                </form>
             </div>
-            <div>
-                <a href={blog.url} >{blog.url}</a>
-                <p>{blog.likes} likes <button onClick={() => likeHandler()}>like</button></p>
-                added by {blog.user.name} <br />
-                <button onClick={() => removeHandler()}>remove</button>
-            </div>
-            <h5>Comments</h5>
-            <form onSubmit={commentHandler}>
-                <input value={comment.value} onChange={comment.onChange} type={comment.type}/>
-                <button type='submit'>comment</button>
-            </form>
-            <ul>
-                {blog.comments.map(comment=><li key={comment.timestamp}>{comment.content}</li>)}
+            <ul className='list-group col-sm-6'>
+                {blog.comments.map(comment=><li key={comment.timestamp} className='list-group-item'>{comment.content}</li>)}
             </ul>
         </div>
     )
@@ -73,6 +73,7 @@ const mapDispatchToProps = {
     removeBlog,
     commentBlog
 }
+
 
 const ConnectedBlog = connect(mapStateToProps, mapDispatchToProps)(Blog)
 export default ConnectedBlog

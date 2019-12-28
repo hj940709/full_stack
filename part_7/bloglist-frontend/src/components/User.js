@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const User = ({blogCreatorId, blogCreators}) => {
-    const blogCreator = blogCreators.find(blogCreator=>blogCreator.id===blogCreatorId)
+const User = ({blogCreator}) => {
+    //const blogCreator = blogCreators.find(blogCreator=>blogCreator.id===blogCreatorId)
     return (
         <div>
             <h4>{blogCreator.name}</h4>
             <h5>Added blogs</h5>
-            <ul>
-                {blogCreator.blogs.map(blog => <li key={blog.id}>{blog.title}</li>)}
+            <ul className='list-group col-sm-6'>
+                {blogCreator.blogs.map(blog => <li key={blog.id} className='list-group-item'>{blog.title}</li>)}
             </ul>
         </div>
     )

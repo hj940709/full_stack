@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { useField } from '../hooks'
+import Notification from './Notifiaction'
 import { login, logout } from '../reducers/loginReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
@@ -20,13 +21,14 @@ const LoginForm = ({login, setNotification}) => {
 
     return(
         <div>
+            <Notification />
             <h2>Log in to application</h2>
-            <form onSubmit={loginHandler}>
+            <form onSubmit={loginHandler} >
                 <label>username: </label>
-                <input value={username.value} type={username.type} onChange={username.onChange}/> <br />
+                <input  className={username.className} value={username.value} type={username.type} onChange={username.onChange} data-cy='username'/> <br />
                 <label>password: </label>
-                <input value={password.value} type={password.type} onChange={password.onChange}/><br /><br />
-                <button type='submit'>Login</button>
+                <input className={username.className} value={password.value} type={password.type} onChange={password.onChange} data-cy='password'/><br /><br />
+                <button type='submit' className='btn btn-primary col-sm-3' data-cy='login'>Login</button>
             </form>
         </div>
     )

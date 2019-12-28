@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { initialUser } from '../reducers/userReducer'
+
 
 const UserItem = ({blogCreator}) => (
     <tr>
@@ -12,15 +12,11 @@ const UserItem = ({blogCreator}) => (
     </tr>
 )
 
-const UserView = ({ blogCreators, initialUser }) => {
-    useEffect(()=>{
-        initialUser()
-    }, [])
-
+const UserView = ({ blogCreators }) => {
     return (
         <div>
             <h3>Users</h3>
-            <table>
+            <table className='table'>
                 <tbody>
                     <tr>
                         <td></td>
@@ -39,9 +35,6 @@ const mapStateToProps = (state) => {
         blogCreators : state.blogCreators
     }
 }
-const mapDispatchToProps = {
-    initialUser
-}
 
-const ConnectedUserView = connect(mapStateToProps, mapDispatchToProps)(UserView)
+const ConnectedUserView = connect(mapStateToProps)(UserView)
 export default ConnectedUserView

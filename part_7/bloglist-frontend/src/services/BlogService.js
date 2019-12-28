@@ -1,9 +1,12 @@
 import axios from 'axios'
 const baseUrl = '/api/blog'
 
-const user = JSON.parse(window.localStorage.getItem('user')) || {token: null}
-const token = 'bearer ' + user.token
-const config = { headers: { Authorization: token } }
+const getConfig = () => {
+    const user = JSON.parse(window.localStorage.getItem('user'))
+    const token = 'bearer ' + user.token
+    const config = { headers: { Authorization: token } }
+    return config
+}
 
 const getAll = async () => {
     const response = await axios.get(baseUrl)
@@ -16,22 +19,22 @@ const getBlogById = async id => {
 }
 
 const postBlog = async data => {
-    const response = await axios.post(baseUrl, data, config)
+    const response = await axios.post(baseUrl, data, getConfig())
     return response.data
 }
 
 const likeBlog = async data => {
-    const response =  await axios.put(baseUrl+'/'+data.id, {likes: data.likes + 1 }, config)
+    const response =  await axios.put(baseUrl+'/'+data.id, {likes: data.likes + 1 }, getConfig())
     return response.data
 }
 
 const removeBlog = async (id) => {
-    const response = await axios.delete(baseUrl+'/'+id, config)
+    const response = await axios.delete(baseUrl+'/'+id, getConfig())
     return response.data
 }
 
 const commentBlog = async (id, comment) => {
-    const response = await axios.post(baseUrl+'/'+id+'/comment', { comment }, config)
+    const response = await axios.post(baseUrl+'/'+id+'/comment', { comment }, getConfig())
     return response.data
 }
 

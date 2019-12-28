@@ -18,18 +18,18 @@ const TogglableView = React.forwardRef((props, ref) => {
     })
 
     return (
-        <div>
+        <div className='col-sm-12'>
             <div style={hideWhenVisible}>
-                <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+                <button onClick={toggleVisibility} className='btn btn-primary col-sm-3' data-cy={props.buttonLabel+'-toggle'}>{props.buttonLabel}</button>
             </div>
             <div style={showWhenVisible}>
                 {props.children}
-                <button onClick={toggleVisibility}>cancel</button>
+                <button onClick={toggleVisibility} className='btn btn-info col-sm-3' data-cy='cancel-toggle'>cancel</button>
             </div>
         </div>
     )
 })
-
+TogglableView.displayName = 'TogglableView'
 TogglableView.propTypes = {
     buttonLabel: PropTypes.string.isRequired
 }

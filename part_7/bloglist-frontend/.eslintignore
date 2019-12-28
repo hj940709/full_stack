@@ -1,2 +1,5 @@
 node_modules
 build
+webpack.config.js
+tests
+cypress

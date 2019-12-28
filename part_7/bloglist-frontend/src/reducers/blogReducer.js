@@ -3,28 +3,34 @@ import BlogService from '../services/BlogService'
 const reducer = (state = [], action) => {
     let newState   
     switch(action.type){
-        case 'CREATE_BLOG':
+        case 'CREATE_BLOG': {
             const newObject = {...action.data}
             newState = state.concat(newObject)
             newState.sort((a, b) => b.votes - a.votes)
             return newState
-        case 'LIKE_BLOG':
-            const changed = {...toChange, likes: toChange.likes + 1}
-            const id = action.data && action.data.id || null
+        }
+        case 'LIKE_BLOG': {
+            const id = action.data.id
             const toChange = state.find(n => n.id === id)
+            const changed = {...toChange, likes: toChange.likes + 1}
             newState = state.map(blog => blog.id !==id ? blog : changed)
             newState.sort((a, b) => b.votes - a.votes)
             return newState
-        case 'COMMENT_BLOG':
+        }
+        case 'COMMENT_BLOG': {
             newState = state.map(blog => blog.id !== action.data.id ? blog : action.data)
             newState.sort((a, b) => b.votes - a.votes)
             return newState
-        case 'REMOVE_BLOG':
+        }
+        case 'REMOVE_BLOG': {
             return state.filter(blog=>blog.id!==action.data.id)
-        case 'INIT_BLOG':
+        }
+        case 'INIT_BLOG': {
             return action.data
-        default:
+        }
+        default: {
             return state
+        }
     }
   }
   

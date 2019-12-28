@@ -1,38 +1,33 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import BlogForm from './BlogForm'
 import TogglableView from './ToggleableView'
-import { initialBlog } from '../reducers/blogReducer'
+
 
 const BlogItem = ({blog}) => {
-    const blogStyle = {
-        paddingTop: 10,
-        paddingLeft: 2,
-        border: 'solid',
-        borderWidth: 1,
-        marginBottom: 5
-    }
+
     return (
-        <Link style={blogStyle} to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+        <Link to={`/blogs/${blog.id}`} data-cy={blog.title} >{blog.title} {blog.author}</Link>
     )
 }
 
-const BlogView = ({ blogs, initialBlog }) => {
+const BlogView = ({ blogs }) => {
     const blogFormRef = React.createRef()
-
-    useEffect(() => {
-        initialBlog()
-    }, [])
-
+    
     return (
-        <div>
-            <h3>Post new blog</h3>
-            <TogglableView buttonLabel='New Post' ref={blogFormRef}>
-                <BlogForm  toggleRef={blogFormRef}/>
-            </TogglableView>
-            <br />
-            {blogs.map(blog => <p key={blog.id} ><BlogItem blog={blog} /></p>)}
+        <div className='col-sm-12'>
+            <div className='col-sm-6'>
+                <h3>Post new blog</h3>
+                <TogglableView buttonLabel='New Post' ref={blogFormRef}>
+                    <BlogForm  toggleRef={blogFormRef}/>
+                </TogglableView>
+            </div >
+            <div className='col-sm-6'>
+            <ul className='list-group'>
+                {blogs.map(blog => <li key={blog.id} className='list-group-item'><BlogItem blog={blog} /></li>)}
+            </ul>
+            </div>
         </div>
     )
 }
@@ -43,10 +38,8 @@ const mapStateToProps = (state) => {
         blogs: state.blogs
     }
 }
-const mapDispatchToProps = {
-    initialBlog
-}
 
-const ConnectedBlogView = connect(mapStateToProps, mapDispatchToProps)(BlogView)
+
+const ConnectedBlogView = connect(mapStateToProps)(BlogView)
 export default ConnectedBlogView
 

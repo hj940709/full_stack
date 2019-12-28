@@ -11,9 +11,12 @@ export const useField = (type) => {
         setValue('')
     }
 
+    const className = 'form-control'
+
     return {
         type,
         value,
+        className,
         onChange,
         reset
     }

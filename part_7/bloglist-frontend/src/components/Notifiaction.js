@@ -8,7 +8,7 @@ const Notification = ({ message, isError }) => {
     }
 
     return (
-        <div className={isError ? 'error' : 'success'}>
+        <div className={isError ? 'alert alert-danger' : 'alert alert-success'}>
             {message}
         </div>
     )
