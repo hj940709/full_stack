@@ -24,6 +24,19 @@ blogsRouter.post('/', async (request, response, next) => {
     }
 })
 
+blogsRouter.post('/:id/comment', async (request, response, next) => {
+    try{
+        const comment = {content: request.body.comment, timestamp: new Date().getTime()}
+        const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
+        if(!request.token || !decodedToken.id)
+            return response.status(401).json({error: 'Not logged in'})
+        return response.json(await Blog.findByIdAndUpdate(request.params.id, {$push: { comments : comment}}))
+    }catch(exception){
+        next(exception)
+    }
+})
+
+
 blogsRouter.delete('/:id', async (request, response, next) => {
     try{
         const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)

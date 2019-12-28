@@ -1,7 +1,7 @@
 import BlogService from '../services/BlogService'
 
 const reducer = (state = [], action) => {
-    let newState
+    let newState   
     switch(action.type){
         case 'CREATE_BLOG':
             const newObject = {...action.data}
@@ -9,10 +9,14 @@ const reducer = (state = [], action) => {
             newState.sort((a, b) => b.votes - a.votes)
             return newState
         case 'LIKE_BLOG':
-            const id = action.data.id
-            const toChange = state.find(n => n.id === id)
             const changed = {...toChange, likes: toChange.likes + 1}
+            const id = action.data && action.data.id || null
+            const toChange = state.find(n => n.id === id)
             newState = state.map(blog => blog.id !==id ? blog : changed)
+            newState.sort((a, b) => b.votes - a.votes)
+            return newState
+        case 'COMMENT_BLOG':
+            newState = state.map(blog => blog.id !== action.data.id ? blog : action.data)
             newState.sort((a, b) => b.votes - a.votes)
             return newState
         case 'REMOVE_BLOG':
@@ -64,6 +68,16 @@ export const removeBlog = blog => {
     }
 }
 
+export const commentBlog = (id, comment) => {
+    return async dispatch => {
+        await BlogService.commentBlog(id, comment)
+        const data = await BlogService.getBlogById(id)
+        dispatch({
+            type: 'COMMENT_BLOG',
+            data
+        })
+    }
+}
 
   
-  export default reducer
+export default reducer

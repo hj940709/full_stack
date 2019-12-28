@@ -20,7 +20,13 @@ const blogSchema = mongoose.Schema({
     user: {
         type: String,
         ref: 'User'
-    }
+    },
+    comments: [
+        {
+            content: String,
+            timestamp: Number
+        }
+    ]
 })
 
 blogSchema.set('toJSON', {
@@ -28,6 +34,7 @@ blogSchema.set('toJSON', {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
         delete returnedObject.__v
+        returnedObject.comments.forEach(comment=>delete comment._id)
     }
 })
 
