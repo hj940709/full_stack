@@ -7,7 +7,7 @@
     "test": "cross-env NODE_EVN=test jest --verbose  --runInBand",
     "watch": "cross-env NODE_EVN=development nodemon index.js",
     "start": "cross-env NODE_EVN=production node index.js",
-    "start:test": "cross-env NODE_ENV=test JWT_SECRET=d9avrfjx PORT=3001 PASSWORD=c1yZZej215HGqLSY nodemon index.js"
+    "start:test": "cross-env NODE_ENV=test nodemon index.js"
   },
   "author": "jue.hou",
   "license": "ISC",
