@@ -4,10 +4,13 @@ import { logout } from '../reducers/loginReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { likeBlog, removeBlog, commentBlog } from '../reducers/blogReducer'
 import { useField } from '../hooks'
+import {
+    useHistory
+  } from 'react-router-dom'
 
-const Blog = ({ blog, setNotification, likeBlog, removeBlog, commentBlog }) => {
+const Blog = ({ blog, user, setNotification, likeBlog, removeBlog, commentBlog }) => {
     const comment = useField('text')
-
+    const history = useHistory()
     const likeHandler = async () => {
         try{
             likeBlog(blog)
@@ -19,8 +22,12 @@ const Blog = ({ blog, setNotification, likeBlog, removeBlog, commentBlog }) => {
 
     const removeHandler = async () => {
         try{
-            removeBlog(blog)
-            setNotification({message: `${blog.title} removed`, isError: false}, 5000)
+            if(blog.user.id === user.id){
+                removeBlog(blog)
+                setNotification({message: `${blog.title} removed`, isError: false}, 5000)
+            }
+            else setNotification({message: `Unable to remove ${blog.title}`, isError: true}, 5000)
+            history.push('/')
         }catch(error){
             setNotification({message: error.response.data.error, isError: true}, 5000)
         }
@@ -63,7 +70,8 @@ const Blog = ({ blog, setNotification, likeBlog, removeBlog, commentBlog }) => {
 
 const mapStateToProps = (state) => {
     return {
-        blogs: state.blogs
+        blogs: state.blogs,
+        user: state.user.user
     }
 }
 const mapDispatchToProps = {
