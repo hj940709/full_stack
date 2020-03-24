@@ -10,13 +10,13 @@ function App() {
     const [message, setMessage] = useState('')
     const [error, setError] = useState(false)
     if(user===null ||token === null){
-        const LoginFormRef = React.createRef()
+        //const LoginFormRef = React.createRef()
         return (
             <div className="App">
                 <Notification message={message} error={error}/>
-                <TogglableView buttonLabel='login' ref={LoginFormRef}>
-                    <LoginForm setUser={setUser} setToken={setToken} setMessage={setMessage} setError={setError}/>
-                </TogglableView>
+
+                <LoginForm setUser={setUser} setToken={setToken} setMessage={setMessage} setError={setError}/>
+
             </div>
         )
     }

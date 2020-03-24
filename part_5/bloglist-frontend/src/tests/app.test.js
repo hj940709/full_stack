@@ -29,7 +29,7 @@ describe('Login test', () => {
     test('if no user logged, blogs are not rendered', async () => {
         component = render(<App />)
         const element = await waitForElement(
-            () => component.getByText('login')
+            () => component.getByText('Login')
         )
         expect(element).toBeDefined
         expect(component.container).not.toHaveTextContent('React patterns Michael Chan')

@@ -1,42 +1,24 @@
 import React, { useState } from 'react'
-import BlogService from '../services/BlogService'
 
-const BlogForm = ({ blogs, setBlogs, setMessage, setError, toggleRef }) => {
+const BlogForm = ({ postHandler }) => {
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
 
-    const postHandler = async e => {
+    const post = async e => {
         e.preventDefault()
-        toggleRef.current.toggleVisibility()
-        try{
-            const data = await BlogService.postBlog({ title, author, url })
-            setBlogs(blogs.concat(data))
-            setMessage(`A new blog: ${data.title} by ${data.author} added`)
-            setError(false)
-            setTimeout(() => {
-                setMessage(null)
-                setError(false)
-            }, 5000)
-        }catch(error){
-            setMessage(error.response.data.error)
-            setError(true)
-            setTimeout(() => {
-                setMessage(null)
-                setError(false)
-            }, 5000)
-        }
+        postHandler(title, author, url)
     }
 
     return (
-        <form onSubmit={postHandler}>
+        <form onSubmit={post}>
             <label>title: </label>
-            <input type='text' value={title} onChange={({ target }) => setTitle(target.value)}/> <br />
+            <input id='title' data-cy='title' type='text' value={title} onChange={({ target }) => setTitle(target.value)}/> <br />
             <label>author: </label>
-            <input type='text' value={author} onChange={({ target }) => setAuthor(target.value)}/> <br />
+            <input id='author' data-cy='author' type='text' value={author} onChange={({ target }) => setAuthor(target.value)}/> <br />
             <label>url: </label>
-            <input type='text' value={url} onChange={({ target }) => setUrl(target.value)}/><br /><br />
-            <button type='submit'>Post</button>
+            <input id='url' data-cy='url' type='text' value={url} onChange={({ target }) => setUrl(target.value)}/><br /><br />
+            <button data-cy='post' type='submit'>Post</button>
         </form>
     )
 }

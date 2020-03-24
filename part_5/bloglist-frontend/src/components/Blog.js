@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import BlogService from '../services/BlogService'
-const Blog = ({ blog, updated, setUpdated, setMessage, setError }) => {
+
+const Blog = ({ blog, likeHandler, removeHandler }) => {
     const [visible, setVisible] = useState(true)
     const hideWhenVisible = { display: visible ? 'none' : '' }
     const blogStyle = {
@@ -11,45 +11,7 @@ const Blog = ({ blog, updated, setUpdated, setMessage, setError }) => {
         marginBottom: 5
     }
 
-    const likeHandler = async () => {
-        try{
-            await BlogService.likeBlog(blog.id, blog.likes+1)
-            setUpdated(!updated)
-            setMessage(`${blog.title} liked`)
-            setError(false)
-            setTimeout(() => {
-                setMessage(null)
-                setError(false)
-            }, 5000)
-        }catch(error){
-            setMessage(error.response.data.error)
-            setError(true)
-            setTimeout(() => {
-                setMessage(null)
-                setError(false)
-            }, 5000)
-        }
-    }
-
-    const removeHandler = async () => {
-        try{
-            await BlogService.removeBlog(blog.id)
-            setUpdated(!updated)
-            setMessage(`${blog.title} removed`)
-            setError(false)
-            setTimeout(() => {
-                setMessage(null)
-                setError(false)
-            }, 5000)
-        }catch(error){
-            setMessage(error.response.data.error)
-            setError(true)
-            setTimeout(() => {
-                setMessage(null)
-                setError(false)
-            }, 5000)
-        }
-    }
+    
 
     return (
         <div style={blogStyle}>
@@ -57,10 +19,10 @@ const Blog = ({ blog, updated, setUpdated, setMessage, setError }) => {
                 {blog.title} {blog.author}
             </div>
             <div style={hideWhenVisible}>
-                <a href={blog.url} >{blog.url}</a>
-                <p>{blog.likes} likes <button onClick={() => likeHandler()}>like</button></p>
+                <a href={blog.url} >{blog.url}</a> <br/>
+                <span className='like_num' >{blog.likes} likes</span><button className='likeBtn' data-cy='like' onClick={() => likeHandler(blog)}>like</button><br />
                 added by {blog.user.name} <br />
-                <button onClick={() => removeHandler()}>remove</button>
+                <button data-cy='remove' onClick={() => removeHandler(blog)}>remove</button>
             </div>
         </div>
     )

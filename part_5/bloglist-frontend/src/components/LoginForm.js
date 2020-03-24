@@ -7,7 +7,6 @@ const LoginForm = (props) => {
     const username = useField('text')
     const password = useField('text')
     const { setUser, setToken, setMessage, setError } = props
-
     const loginHandler = async (e) => {
         e.preventDefault()
         try{
@@ -31,10 +30,10 @@ const LoginForm = (props) => {
             <h2>Log in to application</h2>
             <form onSubmit={loginHandler}>
                 <label>username: </label>
-                <input value={username.value} type={username.type} onChange={username.onChange}/> <br />
+                <input data-cy='username' value={username.value} type={username.type} onChange={username.onChange}/> <br />
                 <label>password: </label>
-                <input value={password.value} type={password.type} onChange={password.onChange}/><br /><br />
-                <button type='submit'>Login</button>
+                <input data-cy='password' value={password.value} type={password.type} onChange={password.onChange}/><br /><br />
+                <button type='submit' data-cy='submit'>Login</button>
             </form>
         </div>
     )
