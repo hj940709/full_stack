@@ -148,7 +148,13 @@ const resolvers = {
                 condition.author = result._id
             }
             if (typeof args.genre !== 'undefined') condition.genres = args.genre
-            return Book.find(condition)
+            let ret = await Book.aggregate([
+                {$match: condition},
+                {$lookup:{from: 'authors', localField: 'author', foreignField: '_id', as: 'author_obj'}},
+                {$project: {_id:0, id:'$_id', title:1, published: 1, genres: 1, author: { $arrayElemAt: [ "$author_obj.name", 0 ] }}}
+            ])
+
+            return ret
         },
         allAuthors: () => Author.aggregate([
             {$lookup:{from: 'books', localField: '_id', foreignField: 'author', as: 'books'}}, 

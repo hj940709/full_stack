@@ -1,41 +1,30 @@
+
 import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
-import Recommendation from './components/Recommendation'
-import { useSubscription } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
-
-const BOOK_ADDED = gql`
-  subscription {
-    bookAdded {
-      id
-      title
-      published
-      genres
-    }
-  }
-`
-
+import { useApolloClient, useSubscription } from '@apollo/client';
+import {BOOK_ADDED} from './query'
 
 const LoginMenu = ({token, setPage, setToken}) => {
+  const client = useApolloClient()
   if(token){
+    
     return (
       <span>
         <button onClick={() => setPage('add')}>add book</button>
-        <button onClick={() => setPage('recommendation')}>recommendation</button>
         <button onClick={() => {
           localStorage.clear()
           setPage('authors')
           setToken(null)
+          client.resetStore()
           }}>logout</button>
       </span>
     )
   }
   else return ( <button onClick={() => setPage('login')}>login</button>)
 }
-
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -44,7 +33,6 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      console.log(subscriptionData)
       alert(`${subscriptionData.data.bookAdded.title} added!`)
       setSubUpdated(!subUpdated)
     }
@@ -56,7 +44,6 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <LoginMenu setPage={setPage} setToken={setToken} token={token}/>
-       
       </div>
 
       <Authors
@@ -66,14 +53,11 @@ const App = () => {
       <Books
         show={page === 'books'} subUpdated={subUpdated}
       />
-      
+
       <NewBook
-        show={page === 'add' && token} setPage={setPage}
+        show={page === 'add'} setPage={setPage}
       />
-
-      <LoginForm show={page === 'login'} setToken={setToken} setPage={setPage}/>
-
-      <Recommendation show={page === 'recommendation'} subUpdated={subUpdated}/>
+       <LoginForm show={page === 'login'} setToken={setToken} setPage={setPage}/>
     </div>
   )
 }
