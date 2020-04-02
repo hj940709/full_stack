@@ -30,7 +30,6 @@ const addEntry = (entry: NewPatientEntry ): PatientEntry => {
 };
 
 
-
 export default {
     getEntries,
     getNonSensitiveEntries,
