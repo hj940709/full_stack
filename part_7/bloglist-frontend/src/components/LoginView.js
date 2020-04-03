@@ -13,7 +13,7 @@ import Notification from './Notifiaction'
 import { initialUser } from '../reducers/userReducer'
 import { initialBlog } from '../reducers/blogReducer'
 
-const LoginView = ({blogs, blogCreators, initialUser, initialBlog}) => {
+const LoginView = ({initialUser, initialBlog}) => {
     useEffect(()=>{
         console.log(123)
         initialUser()
@@ -28,10 +28,12 @@ const LoginView = ({blogs, blogCreators, initialUser, initialBlog}) => {
                 <h2>Blog App</h2>
                 <Route exact path="/" render={() => <BlogView />} />
                 <Route exact path="/user" render={() => <UserView />} />
-                <Route exact path="/user/:id" render={({ match }) => 
-                    <User blogCreator={blogCreators.find(blogCreator=>blogCreator.id===match.params.id)}/>} />
-                <Route exact path="/blogs/:id" render={({ match }) => 
-                    <Blog blog={blogs.find(blog=>blog.id===match.params.id)}/>} />
+                <Route exact path="/user/:id">
+                    <User />
+                </Route>
+                <Route exact path="/blogs/:id">
+                    <Blog />
+                </Route>
             </Router>
         </div>
     )

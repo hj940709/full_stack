@@ -9,7 +9,7 @@ router.get('/', (_req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  res.json(patientService.getNonSensitiveEntriesById(req.params.id));
+  res.json(patientService.getEntriesById(req.params.id));
 });
 
 router.post('/', (req, res) => {

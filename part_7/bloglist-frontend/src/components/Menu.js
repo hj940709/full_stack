@@ -1,8 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+
+  
 import { logout } from '../reducers/loginReducer'
 const Menu = ({ user, logout }) => {
+    const history = useHistory()
+        
+    const logoutHandler = () => {
+        logout()
+        history.push('/')
+    }
     return (
         <nav className="navbar navbar-default">
             <div className="container-fluid">
@@ -12,7 +20,7 @@ const Menu = ({ user, logout }) => {
                 </ul>
                 <p className="navbar-text">{user.name} logged in </p>
                 
-                <button type='button' className='btn btn-default navbar-btn' onClick={() => logout()}>Logout</button>
+                <button type='button' className='btn btn-default navbar-btn' onClick={logoutHandler}>Logout</button>
             </div>
         </nav>
     )
