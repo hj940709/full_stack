@@ -118,4 +118,4 @@ export const toNewEntry = (object: any): NewEntry => {
         default: 
             return assertNever(temp);
     }
-  };
+};
