@@ -4,7 +4,7 @@ import { Header, Icon, Button } from "semantic-ui-react";
 import EntryItem from './EntryItem';
 import AddEntryModel from './AddEntryModal'
 import { EntryFormValues } from "./AddEntryModal/AddEntryForm";
-import { Patient, HealthCheckEntry } from "./types";
+import { Patient } from "./types";
 import { apiBaseUrl } from "./constants";
 import { useStateValue, updatePatient } from "./state";
 import { useParams } from 'react-router-dom'
